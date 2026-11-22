@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">VYBE</string>
+    <string name="vybe_tagline">Share your pulse. Connect in real time.</string>
+    <string name="sign_in_google">Continue with Google</string>
+    <string name="nav_feed">Feed</string>
+    <string name="nav_messages">Messages</string>
+    <string name="nav_alerts">Alerts</string>
+    <string name="nav_profile">Profile</string>
+    <string name="action_new_post">Drop a Vybe</string>
+    <string name="action_sign_out">Sign out</string>
+</resources>

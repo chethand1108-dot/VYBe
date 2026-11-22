@@ -1,0 +1,217 @@
+{
+  "entities": {
+    "Account": {
+      "title": "Account",
+      "description": "Private user account metadata and notification preferences.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Firebase Auth UID of the account owner." },
+        "email": { "type": "string", "description": "Private user email address." },
+        "alertsEnabled": { "type": "boolean", "description": "Whether in-app activity alerts are enabled." },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "email", "alertsEnabled", "createdAt", "updatedAt"]
+    },
+    "Profile": {
+      "title": "Profile",
+      "description": "Public social profile for VYBE discovery, followers, and creator attribution.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "displayName": { "type": "string" },
+        "handle": { "type": "string" },
+        "bio": { "type": "string" },
+        "moodTag": { "type": "string" },
+        "avatarColor": { "type": "string" },
+        "photoUrl": { "type": "string" },
+        "photoDataUrl": { "type": "string" },
+        "discoverable": { "type": "boolean" },
+        "postsCount": { "type": "integer" },
+        "followersCount": { "type": "integer" },
+        "followingCount": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "displayName", "handle", "bio", "moodTag", "avatarColor", "discoverable", "postsCount", "followersCount", "followingCount", "createdAt", "updatedAt"]
+    },
+    "Post": {
+      "title": "Post",
+      "description": "Community post in the VYBE feed (text, photo, or video preview).",
+      "type": "object",
+      "properties": {
+        "authorId": { "type": "string" },
+        "authorName": { "type": "string" },
+        "authorHandle": { "type": "string" },
+        "authorAvatarColor": { "type": "string" },
+        "authorPhotoUrl": { "type": "string" },
+        "caption": { "type": "string" },
+        "vibeTag": { "type": "string" },
+        "mediaType": { "type": "string", "enum": ["text", "photo", "video"] },
+        "photoDataUrl": { "type": "string" },
+        "mediaDurationSec": { "type": "integer" },
+        "visibility": { "type": "string", "enum": ["public"] },
+        "likesCount": { "type": "integer" },
+        "commentsCount": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["authorId", "authorName", "authorHandle", "authorAvatarColor", "caption", "vibeTag", "mediaType", "mediaDurationSec", "visibility", "likesCount", "commentsCount", "createdAt", "updatedAt"]
+    },
+    "Comment": {
+      "title": "Comment",
+      "description": "Comment on a VYBE post.",
+      "type": "object",
+      "properties": {
+        "postId": { "type": "string" },
+        "postVisibility": { "type": "string", "enum": ["public"] },
+        "authorId": { "type": "string" },
+        "authorName": { "type": "string" },
+        "authorHandle": { "type": "string" },
+        "authorAvatarColor": { "type": "string" },
+        "text": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["postId", "postVisibility", "authorId", "authorName", "authorHandle", "authorAvatarColor", "text", "createdAt"]
+    },
+    "Like": {
+      "title": "Like",
+      "description": "Deterministic post like record keyed by postId_userId.",
+      "type": "object",
+      "properties": {
+        "postId": { "type": "string" },
+        "userId": { "type": "string" },
+        "postAuthorId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["postId", "userId", "postAuthorId", "createdAt"]
+    },
+    "Follow": {
+      "title": "Follow",
+      "description": "Deterministic follow edge keyed by followerId_followedId.",
+      "type": "object",
+      "properties": {
+        "followerId": { "type": "string" },
+        "followedId": { "type": "string" },
+        "followerName": { "type": "string" },
+        "followedName": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["followerId", "followedId", "followerName", "followedName", "createdAt"]
+    },
+    "Story": {
+      "title": "Story",
+      "description": "Temporary 24-hour VYBE story.",
+      "type": "object",
+      "properties": {
+        "authorId": { "type": "string" },
+        "authorName": { "type": "string" },
+        "authorHandle": { "type": "string" },
+        "authorAvatarColor": { "type": "string" },
+        "caption": { "type": "string" },
+        "moodTag": { "type": "string" },
+        "mediaType": { "type": "string", "enum": ["text", "photo", "video"] },
+        "mediaDataUrl": { "type": "string" },
+        "accentGradient": { "type": "string" },
+        "visibility": { "type": "string", "enum": ["public"] },
+        "expiresAtEpochMs": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["authorId", "authorName", "authorHandle", "authorAvatarColor", "caption", "moodTag", "mediaType", "accentGradient", "visibility", "expiresAtEpochMs", "createdAt", "updatedAt"]
+    },
+    "Conversation": {
+      "title": "Conversation",
+      "description": "Direct message thread between two VYBE users.",
+      "type": "object",
+      "properties": {
+        "participantIds": { "type": "array" },
+        "participantAId": { "type": "string" },
+        "participantAName": { "type": "string" },
+        "participantAHandle": { "type": "string" },
+        "participantBId": { "type": "string" },
+        "participantBName": { "type": "string" },
+        "participantBHandle": { "type": "string" },
+        "lastMessageText": { "type": "string" },
+        "lastSenderId": { "type": "string" },
+        "lastMessageAt": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["participantIds", "participantAId", "participantAName", "participantAHandle", "participantBId", "participantBName", "participantBHandle", "lastMessageText", "lastSenderId", "lastMessageAt", "createdAt", "updatedAt"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "Individual direct message inside a conversation.",
+      "type": "object",
+      "properties": {
+        "conversationId": { "type": "string" },
+        "senderId": { "type": "string" },
+        "senderName": { "type": "string" },
+        "participantIds": { "type": "array" },
+        "text": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["conversationId", "senderId", "senderName", "participantIds", "text", "createdAt"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "User activity notification for likes, comments, follows, direct messages, and onboarding.",
+      "type": "object",
+      "properties": {
+        "recipientId": { "type": "string" },
+        "actorId": { "type": "string" },
+        "actorName": { "type": "string" },
+        "type": { "type": "string", "enum": ["like", "comment", "follow", "message", "welcome"] },
+        "title": { "type": "string" },
+        "body": { "type": "string" },
+        "targetId": { "type": "string" },
+        "seen": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["recipientId", "actorId", "actorName", "type", "title", "body", "seen", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/accounts/{userId}": {
+      "schema": { "$ref": "#/entities/Account" },
+      "description": "Owner-only private account records and PII."
+    },
+    "/profiles/{userId}": {
+      "schema": { "$ref": "#/entities/Profile" },
+      "description": "Public creator profiles discoverable by signed-in VYBE users."
+    },
+    "/posts/{postId}": {
+      "schema": { "$ref": "#/entities/Post" },
+      "description": "Public community posts with atomic like and comment counters."
+    },
+    "/posts/{postId}/comments/{commentId}": {
+      "schema": { "$ref": "#/entities/Comment" },
+      "description": "Real-time comments on a post."
+    },
+    "/likes/{likeId}": {
+      "schema": { "$ref": "#/entities/Like" },
+      "description": "User likes keyed deterministically as {postId}_{userId}."
+    },
+    "/follows/{followId}": {
+      "schema": { "$ref": "#/entities/Follow" },
+      "description": "Follow relationships keyed deterministically as {followerId}_{followedId}."
+    },
+    "/stories/{storyId}": {
+      "schema": { "$ref": "#/entities/Story" },
+      "description": "Temporary 24-hour VYBE stories."
+    },
+    "/conversations/{conversationId}": {
+      "schema": { "$ref": "#/entities/Conversation" },
+      "description": "Direct message threads scoped to two participants."
+    },
+    "/conversations/{conversationId}/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/Message" },
+      "description": "Messages inside a direct message thread with denormalized participantIds."
+    },
+    "/users/{userId}/notifications/{notificationId}": {
+      "schema": { "$ref": "#/entities/Notification" },
+      "description": "Per-user activity notifications."
+    }
+  }
+}
